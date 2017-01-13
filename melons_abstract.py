@@ -11,8 +11,12 @@ class AbstractMelonOrder(object):
 
     def get_total(self):
         """Calculate price."""
-
         base_price = 5
+
+        if self.species == "Christmas melon":
+            base_price = base_price * 1.5 
+
+       
         total = (1 + self.tax) * self.qty * base_price
         return total
 
@@ -33,6 +37,8 @@ class InternationalMelonOrder(AbstractMelonOrder):
     def __init__(self, species, qty):
         super(InternationalMelonOrder, self).__init__(species, qty, "international", 0.17)
 
+    def get_total(self):
+        return super(InternationalMelonOrder, self).get_total() + 3.0
 
     def set_country_code(self, country_code):
         self.set_country_code = country_code
@@ -42,7 +48,18 @@ class InternationalMelonOrder(AbstractMelonOrder):
         return self.country_code
 
 
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """GovernmentMelonOrder"""
+    def __init__(self, species, qty):
+        super(GovernmentMelonOrder, self).__init__(species, qty, "government", 0.00)
+    passed_inspection = False
 
+    def mark_inspection(self, passed):
+
+        if passed:
+            self.passed_inspection = True
+        else:
+            self.passed_inspection = False
 
 # """This file should have our order classes in it."""
 
